@@ -1,4 +1,4 @@
-CPFLAG = -O2 -pthread
+CPFLAG = -O2 -pthread -Iinclude
 LDLIBS = -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 
 RM = rm --force
@@ -9,8 +9,8 @@ lol.out: main.o glad.o
 main.o: src/main.cxx
 	g++ -c src/main.cxx $(CPFLAG)
 
-glad.o: src/glad.c
-	g++ -c src/glad.c $(CPFLAG)
+glad.o: glad/glad.c
+	g++ -c glad/glad.c $(CPFLAG)
 
 clean:
 	$(RM) main.o glad.o
