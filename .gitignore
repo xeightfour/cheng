@@ -2,10 +2,10 @@
 *.d
 
 # Compiled object files
-*.slo
 *.lo
-*.o
+*.slo
 *.obj
+*.o
 
 # Precompiled headers
 *.gch
@@ -17,10 +17,10 @@
 *.dll
 
 # Compiled static libraries
-*.lai
-*.la
 *.a
+*.lai
 *.lib
+*.la
 
 # Executables
 *.exe
