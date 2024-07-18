@@ -1,4 +1,4 @@
-CPFLAG = -O2 -pthread -Ilib
+CPFLAG = -O2 -pthread
 LDLIBS = -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 
 RM = rm --force
