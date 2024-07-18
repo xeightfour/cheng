@@ -1,4 +1,4 @@
-// Triangles, colors, uniforms
+// Triangles, colors, uniforms(:
 // The code below uses a separate VBO for color codes
 
 #include <glad/glad.h>
