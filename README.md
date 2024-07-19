@@ -3,3 +3,4 @@
 * Color as a seperate buffer
 * Class Shader
 * Rotation
+* Limiting FPS to 60

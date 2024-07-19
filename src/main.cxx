@@ -1,5 +1,3 @@
-// The code below uses a separate VBO for color codes
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -115,7 +113,18 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    GLfloat frameTime = 1.0f / 60.0f;
+    GLfloat lastFrame = glfwGetTime();
+
     while(!glfwWindowShouldClose(window)) {
+        GLfloat timeValue = glfwGetTime();
+
+        // Set a limit of 60 frames per second
+        if (timeValue - lastFrame < frameTime) {
+            continue;
+        }
+        lastFrame = timeValue;
+
         handleInput(window);
 
         glClearColor(0.145f, 0.165f, 0.204f, 1.0f);
@@ -124,7 +133,6 @@ int main() {
         glBindVertexArray(VAO);
         shader.activate();
 
-        GLfloat timeValue = glfwGetTime();
         GLfloat objectTime = 0.0;
         if (!paused) {
             objectTime = timeValue - pausedTime;
@@ -180,11 +188,11 @@ void keyCallback(GLFWwindow *window, GLint key, GLint scancode, GLint action, GL
         }
     }
     if (key == GLFW_KEY_I && action == GLFW_PRESS) {
-        speed = speed * 1.6f;
+        speed = speed * 2.0f;
         std::cout << "Current rotation speed is " << speed << " rotation(s) per second" << std::endl;
     }
     if (key == GLFW_KEY_D && action == GLFW_PRESS) {
-        speed = speed / 1.6f;
+        speed = speed / 2.0f;
         std::cout << "Current rotation speed is " << speed << " rotation(s) per second" << std::endl;
     }
 }
