@@ -1,4 +1,4 @@
-CPFLAG = -O2 -pthread -Iinclude
+CPFLAG = -O2 -pthread -Iinclude -std=c++17
 LDLIBS = -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 
 RM = rm --force

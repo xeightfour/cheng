@@ -1,4 +1,3 @@
-// Triangles, colors, uniforms, shader as a class((:
 // The code below uses a separate VBO for color codes
 
 #include <glad/glad.h>
@@ -11,9 +10,17 @@
 
 void framebufferSizeCallback(GLFWwindow *window, GLint width, GLint height);
 void handleInput(GLFWwindow *window);
+void keyCallback(GLFWwindow *window, GLint key, GLint scancode, GLint action, GLint mods);
 
 const GLuint SCREEN_WIDTH = 800;
 const GLuint SCREEN_HEIGHT = 800;
+
+const GLfloat pi = acos(-1);
+
+bool paused = false;
+GLfloat pausedTime = 0.0;
+GLfloat press = 0.0;
+GLfloat speed = 1.0;
 
 int main() {
     std::cout << "Hello shader!" << std::endl;
@@ -33,6 +40,7 @@ int main() {
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+    glfwSetKeyCallback(window, keyCallback);
 
     // Load glad
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -66,11 +74,11 @@ int main() {
         1.000f, 0.180f, 0.388f,
         0.031f, 0.851f, 0.839f,
         1.000f, 0.180f, 0.388f,
-        1.000f, 0.180f, 0.388f,
-        1.000f, 0.180f, 0.388f,
         0.031f, 0.851f, 0.839f,
         1.000f, 0.180f, 0.388f,
-        0.031f, 0.851f, 0.839f
+        1.000f, 0.180f, 0.388f,
+        1.000f, 0.180f, 0.388f,
+        1.000f, 0.180f, 0.388f,
     };
 
     // Set up vertex buffers
@@ -117,8 +125,21 @@ int main() {
         shader.activate();
 
         GLfloat timeValue = glfwGetTime();
-        GLfloat redValue = sin(timeValue) / 2.0f + 0.5f;
+        GLfloat objectTime = 0.0;
+        if (!paused) {
+            objectTime = timeValue - pausedTime;
+        } else {
+            objectTime = press - pausedTime;
+        }
+
+        // Change of color
+        GLfloat redValue = sin(objectTime) / 2.0f + 0.5f;
         shader.setFloat("redValue", redValue);
+
+        // Rotation
+        GLfloat theta = objectTime * 2.0 * pi * speed;
+        shader.setFloat("cos", cos(theta));
+        shader.setFloat("sin", sin(theta));
 
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, (void*)0);
         // glDrawArrays(GL_TRIANGLES, 3, 3); oops!
@@ -144,7 +165,26 @@ void framebufferSizeCallback(GLFWwindow *window, GLint width, GLint height) {
 }
 
 void handleInput(GLFWwindow *window) {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
+    }
+}
+
+void keyCallback(GLFWwindow *window, GLint key, GLint scancode, GLint action, GLint mods) {
+    if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+        paused ^= true;
+        if (!paused) {
+            pausedTime += glfwGetTime() - press;
+        } else {
+            press = glfwGetTime();
+        }
+    }
+    if (key == GLFW_KEY_I && action == GLFW_PRESS) {
+        speed = speed * 1.6f;
+        std::cout << "Current rotation speed is " << speed << " rotation(s) per second" << std::endl;
+    }
+    if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+        speed = speed / 1.6f;
+        std::cout << "Current rotation speed is " << speed << " rotation(s) per second" << std::endl;
     }
 }

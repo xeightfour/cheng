@@ -5,7 +5,10 @@ layout (location = 1) in vec3 color;
 
 out vec3 ourColor;
 
+uniform float cos;
+uniform float sin;
+
 void main() {
     ourColor = color;
-    gl_Position = vec4(aPos, 1.0f);
+    gl_Position = vec4(cos * aPos.x - sin * aPos.y, sin * aPos.x + cos * aPos.y, aPos.z, 1.0f);
 }
