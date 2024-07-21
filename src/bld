@@ -1,3 +1,0 @@
-#!/bin/bash
-
-g++ main.cxx ../glad/glad.c -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl --output lol.out

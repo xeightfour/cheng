@@ -1,7 +1,4 @@
-#ifndef SHADER_H
-#define SHADER_H
-
-#include <glad/glad.h>
+#include <GL/glew.h>
 
 #include <iostream>
 #include <string>
@@ -101,10 +98,4 @@ class Shader {
         void setFloat(const std::string &name, GLfloat value) const {
             glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
         }
-
-        void clean() {
-            glDeleteProgram(ID);
-        }
 };
-
-#endif
