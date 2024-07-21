@@ -2,5 +2,6 @@
 * Triangles
 * Color as a seperate buffer
 * Class Shader
-* Rotation
-* Limiting FPS to 60
+* Rotation (dirty)
+* Limit FPS to 60
+* Support headers for makefile
