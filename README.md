@@ -1,10 +1,12 @@
-### Dependencies
+Dependencies
+------------
 
 - [GLFW](https://www.glfw.org/)
 - [GLEW](https://glew.sourceforge.net/)
 - image.h from [stb](https://github.com/nothings/stb)
 
-### Done so far
+Done so far
+-----------
 
 - [x] Triangles
 - [x] Colors
