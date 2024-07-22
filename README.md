@@ -5,8 +5,8 @@ Dependencies
 - [GLEW](https://glew.sourceforge.net/)
 - image.h from [stb](https://github.com/nothings/stb)
 
-Done so far
------------
+TODO
+----
 
 - [x] Triangles
 - [x] Colors
