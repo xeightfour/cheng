@@ -20,6 +20,6 @@ lol.out: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(LINKLIBS) $^ -o $@
 
 clean:
-	rm -f *.o lol.out *.d
+	rm -f src/*.o src/*.d
 
 -include $(DEPENDS)
