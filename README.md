@@ -16,3 +16,8 @@ TODO
 - [x] Texture
 - [x] Better rotation
 - [ ] Shader support for settting multiple values
+
+Result
+------
+
+![](https://raw.githubusercontent.com/xeightfour/cheng/main/assets/sample.gif)
