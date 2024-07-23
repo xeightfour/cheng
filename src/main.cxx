@@ -38,6 +38,9 @@ GLfloat speedMul = ZERO;
 GLfloat angleExcess = ZERO;
 GLfloat angle = ZERO;
 
+// Rotation axis
+GLfloat rotationAxis[] = { 0.577F, 0.577F, 0.577F };
+
 int main() {
     std::cout << "Hello shader!" << std::endl;
     std::cout << "Press <ESC> or Q to kill the program(:" << std::endl;
@@ -92,7 +95,7 @@ int main() {
         0, 1, 3,
         1, 2, 3,
         4, 5, 6,
-        4, 7, 8
+        // 4, 7, 8
     };
 
     GLfloat colors[] = {
@@ -101,7 +104,7 @@ int main() {
         0.031F, 0.851F, 0.839F,
         1.000F, 0.180F, 0.388F,
         0.031F, 0.851F, 0.839F,
-        1.000F, 0.180F, 0.388F,
+        0.031F, 0.851F, 0.839F,
         1.000F, 0.180F, 0.388F,
         1.000F, 0.180F, 0.388F,
         1.000F, 0.180F, 0.388F
@@ -194,6 +197,11 @@ int main() {
 
         shader.activate();
 
+        // Set rotation axis for shader
+        shader.setFloat("Rx", rotationAxis[0]);
+        shader.setFloat("Ry", rotationAxis[1]);
+        shader.setFloat("Rz", rotationAxis[2]);
+
         // Add textures to shader
         shader.setInt("ourTextureWall", 0);
         shader.setInt("ourTextureWood", 1);
@@ -221,7 +229,7 @@ int main() {
         shader.setFloat("sin", sin(angle));
 
         // Just draw everything to screen
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
         glBindVertexArray(0);
 

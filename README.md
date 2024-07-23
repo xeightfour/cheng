@@ -14,4 +14,5 @@ TODO
 - [x] Limit FPS to 90
 - [x] Better makefile
 - [x] Texture
-- [ ] Better rotation
+- [x] Better rotation
+- [ ] Shader support for settting multiple values

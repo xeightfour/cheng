@@ -11,5 +11,5 @@ uniform sampler2D ourTextureWall;
 uniform sampler2D ourTextureWood;
 
 void main() {
-    fragColor = mix(texture(ourTextureWall, texCoord), texture(ourTextureWood, texCoord), 0.70) * vec4(redValue, ourColor.y, ourColor.z, 1.0);
+    fragColor = mix(texture(ourTextureWall, texCoord), texture(ourTextureWood, texCoord), 0.70F) * vec4(redValue, ourColor.y, ourColor.z, 1.0F);
 }
