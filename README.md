@@ -3,7 +3,7 @@ Dependencies
 
 - [GLFW](https://www.glfw.org/)
 - [GLEW](https://glew.sourceforge.net/)
-- image.h from [stb](https://github.com/nothings/stb)
+- stb_image.h from [stb](https://github.com/nothings/stb)
 
 TODO
 ----

@@ -9,7 +9,10 @@ struct Shader {
     GLuint ID;
 
     Shader(const char *vertexPath, const char *fragmentPath) {
+        // Strings containing shader source code
         std::string vertexCode, fragmentCode;
+
+        // Streams to open shader files
         std::ifstream vertexFile, fragmentFile;
 
         // Ensure ifstream objects can throw exceptions
@@ -30,18 +33,21 @@ struct Shader {
 
             vertexCode = vertexStream.str();
             fragmentCode = fragmentStream.str();
-        } catch (const std::ifstream::failure &E) {
+        } catch (const std::ifstream::failure &ERR) {
             std::cout << "[ERROR] SHADER FILE NOT SUCCESSFULLY LOAD" << std::endl;
         }
 
-        const char *vertexShaderSource = vertexCode.c_str();
-        const char *fragmentShaderSource = fragmentCode.c_str();
+        // Convert source code to c-string
+        const char *vertexShaderSource = vertexCode.data();
+        const char *fragmentShaderSource = fragmentCode.data();
 
-        // Compile shaders
-        GLuint vertexShader, fragmentShader;
         GLint success;
         char infoLog[512];
 
+        // Define shaders
+        GLuint vertexShader, fragmentShader;
+
+        // Create vertex shader
         vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
         glCompileShader(vertexShader);
@@ -53,6 +59,7 @@ struct Shader {
             std::cout << "[ERROR] SHADER VERTEX COMPILATION FAILED\n" << infoLog << std::endl;
         }
 
+        // Create fragment shader
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
         glCompileShader(fragmentShader);
@@ -64,13 +71,13 @@ struct Shader {
             std::cout << "[ERROR] SHADER FRAGMENT COMPILATION FAILED\n" << infoLog << std::endl;
         }
 
-        // Link to a shader program
+        // Link all to a shader program
         ID = glCreateProgram();
         glAttachShader(ID, vertexShader);
         glAttachShader(ID, fragmentShader);
         glLinkProgram(ID);
 
-        // Again check if linking was successful
+        // Check if linking was successful
         glGetProgramiv(ID, GL_LINK_STATUS, &success);
         if (!success) {
             glGetProgramInfoLog(ID, 512, NULL, infoLog);
@@ -87,14 +94,14 @@ struct Shader {
     }
 
     void setBool(const std::string &name, bool value) const {
-        glUniform1i(glGetUniformLocation(ID, name.c_str()), (GLint)value);
+        glUniform1i(glGetUniformLocation(ID, name.data()), (GLint)value);
     }
 
     void setInt(const std::string &name, GLint value) const {
-        glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+        glUniform1i(glGetUniformLocation(ID, name.data()), value);
     }
 
     void setFloat(const std::string &name, GLfloat value) const {
-        glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+        glUniform1f(glGetUniformLocation(ID, name.data()), value);
     }
 };

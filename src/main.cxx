@@ -4,49 +4,60 @@
 #include <iostream>
 #include <cmath>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include <shader/shader.hxx>
 #include <texture/texture.hxx>
 
-#define ZERO (float)0.0
-
 void framebufferSizeCallback(GLFWwindow *window, GLint width, GLint height);
+
 void handleInput(GLFWwindow *window);
+
 void keyCallback(GLFWwindow *window, GLint key, GLint scancode, GLint action, GLint mods);
 
-const GLuint SCREEN_WIDTH = 800;
-const GLuint SCREEN_HEIGHT = 800;
+constexpr int GLFW_FAIL = -3;
+constexpr int GLEW_FAIL = -4;
 
-const GLfloat pi = acos(-1);
+constexpr GLfloat ZERO = 0.0F;
 
+constexpr GLuint SCREEN_WIDTH = 800;
+constexpr GLuint SCREEN_HEIGHT = 800;
+
+constexpr GLfloat PI = acos(-1);
+
+// Duration of each frame (90 FPS)
+constexpr GLfloat frameTime = 1.0F / 90.0F;
+
+// Timing
 bool paused = false;
 GLfloat pausedTime = ZERO;
 
-GLfloat speed = 0.8;
+// Rotation speed
+GLfloat speed = 0.8F;
 GLfloat speedMul = ZERO;
-GLfloat overload = ZERO;
+
+// Rotation angle
+GLfloat angleExcess = ZERO;
 GLfloat angle = ZERO;
 
 int main() {
     std::cout << "Hello shader!" << std::endl;
     std::cout << "Press <ESC> or Q to kill the program(:" << std::endl;
 
+    // Initialize GLFW
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // Create the GLFW window
+    // Create & activate GLFW window
     GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", NULL, NULL);
     if (window == NULL) {
         std::cout << "[ERROR] Failed to create GLFW window" << std::endl;
         glfwTerminate();
-        return -1;
+        return GLFW_FAIL;
     }
     glfwMakeContextCurrent(window);
+
+    // Set GLFW Callback functions
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     glfwSetKeyCallback(window, keyCallback);
 
@@ -54,7 +65,7 @@ int main() {
     if (glewInit()) {
         std::cout << "[ERROR] Failed to initialize glew" << std::endl;
         glfwTerminate();
-        return -1;
+        return GLEW_FAIL;
     }
 
     // Create shader
@@ -66,15 +77,15 @@ int main() {
 
     // Define vertices and their attributes
     GLfloat vertices[] = {
-        +0.5f, +0.5f, 0.0f,
-        +0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f, +0.5f, 0.0f,
-        +0.0f, +0.0f, 0.0f,
-        +1.0f, +0.0f, 0.0f,
-        +0.0f, +1.0f, 0.0f,
-        -1.0f, +0.0f, 0.0f,
-        +0.0f, -1.0f, 0.0f
+        +0.5F, +0.5F, 0.0F,
+        +0.5F, -0.5F, 0.0F,
+        -0.5F, -0.5F, 0.0F,
+        -0.5F, +0.5F, 0.0F,
+        +0.0F, +0.0F, 0.0F,
+        +1.0F, +0.0F, 0.0F,
+        +0.0F, +1.0F, 0.0F,
+        -1.0F, +0.0F, 0.0F,
+        +0.0F, -1.0F, 0.0F
     };
 
     GLuint indices[] = {
@@ -85,27 +96,27 @@ int main() {
     };
 
     GLfloat colors[] = {
-        0.031f, 0.851f, 0.839f,
-        1.000f, 0.180f, 0.388f,
-        0.031f, 0.851f, 0.839f,
-        1.000f, 0.180f, 0.388f,
-        0.031f, 0.851f, 0.839f,
-        1.000f, 0.180f, 0.388f,
-        1.000f, 0.180f, 0.388f,
-        1.000f, 0.180f, 0.388f,
-        1.000f, 0.180f, 0.388f
+        0.031F, 0.851F, 0.839F,
+        1.000F, 0.180F, 0.388F,
+        0.031F, 0.851F, 0.839F,
+        1.000F, 0.180F, 0.388F,
+        0.031F, 0.851F, 0.839F,
+        1.000F, 0.180F, 0.388F,
+        1.000F, 0.180F, 0.388F,
+        1.000F, 0.180F, 0.388F,
+        1.000F, 0.180F, 0.388F
     };
 
     GLfloat coords[] = {
-        +0.5f, +0.5f,
-        +0.5f, -0.5f,
-        -0.5f, -0.5f,
-        -0.5f, +0.5f,
-        +0.0f, +0.0f,
-        +1.0f, +0.0f,
-        +0.0f, +1.0f,
-        -1.0f, +0.0f,
-        +0.0f, -1.0f
+        +0.5F, +0.5F,
+        +0.5F, -0.5F,
+        -0.5F, -0.5F,
+        -0.5F, +0.5F,
+        +0.0F, +0.0F,
+        +1.0F, +0.0F,
+        +0.0F, +1.0F,
+        -1.0F, +0.0F,
+        +0.0F, -1.0F
     };
 
     // Create VAO
@@ -131,7 +142,7 @@ int main() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // Attach VBO to VAO
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
     glEnableVertexAttribArray(0);
 
     // Bind COL
@@ -139,35 +150,38 @@ int main() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
 
     // Attach COL to VAO
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
     glEnableVertexAttribArray(1);
 
     // Bind TEX
     glBindBuffer(GL_ARRAY_BUFFER, TEX);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), coords, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(coords), coords, GL_STATIC_DRAW);
 
     // Attach TEX to VAO
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (void*)0);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
     glEnableVertexAttribArray(2);
 
-    // Just in case . . .
+    // Disconnect GL_ARRAY_BUFFER and VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    GLfloat frameTime = 1.0f / 90.0f;
+    // Last frame rendered
     GLfloat lastFrame = glfwGetTime();
-    GLfloat objectTime = lastFrame;
+
+    // Observed time
+    GLfloat phoneyTime = lastFrame;
 
     while(!glfwWindowShouldClose(window)) {
         GLfloat timeValue = glfwGetTime();
 
-        // Set a limit of 90 frames per second
+        // Set a limit of 90 FPS
         if (timeValue - lastFrame < frameTime) {
             continue;
         }
         lastFrame = timeValue;
 
-        glClearColor(0.145f, 0.165f, 0.204f, 1.0f);
+        // Set background color
+        glClearColor(0.145F, 0.165F, 0.204F, 1.0F);
         glClear(GL_COLOR_BUFFER_BIT);
 
         handleInput(window);
@@ -177,49 +191,58 @@ int main() {
         textureWood.bindAsUnit(1);
 
         glBindVertexArray(VAO);
+
         shader.activate();
 
-        // Set up shader textures
+        // Add textures to shader
         shader.setInt("ourTextureWall", 0);
         shader.setInt("ourTextureWood", 1);
 
-        // Update object time considering paused moments
+        // Update observed time
         if (paused) {
-            pausedTime = timeValue - objectTime;
+            pausedTime = timeValue - phoneyTime;
         }
-        objectTime = timeValue - pausedTime;
+        phoneyTime = timeValue - pausedTime;
 
         // Change of color
-        GLfloat redValue = sin(objectTime) / 2.0f + 0.5f;
+        GLfloat redValue = sin(phoneyTime) / 2.0F + 0.5F;
         shader.setFloat("redValue", redValue);
 
-        // Rotation
+        // Rotation speed
         if (speedMul != ZERO) {
             speed *= speedMul;
-            overload += (angle - overload) * (1.0f - speedMul);
+            angleExcess += (angle - angleExcess) * (1.0F - speedMul);
             speedMul = ZERO;
         }
-        angle = objectTime * 2.0f * pi * speed + overload;
+
+        // Rotation angle
+        angle = phoneyTime * 2.0F * PI * speed + angleExcess;
         shader.setFloat("cos", cos(angle));
         shader.setFloat("sin", sin(angle));
 
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, (void*)0);
+        // Just draw everything to screen
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
         glBindVertexArray(0);
+
+        // Free texture units
         Texture::unBindUnits();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    // Deallocate all resources
+    // Deallocate VAO
     glDeleteVertexArrays(1, &VAO);
+
+    // Deallocate vertex buffers
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
     glDeleteBuffers(1, &COL);
     glDeleteBuffers(1, &TEX);
 
     glfwTerminate();
+
     return 0;
 }
 
@@ -234,15 +257,20 @@ void handleInput(GLFWwindow *window) {
 }
 
 void keyCallback(GLFWwindow *window, GLint key, GLint scancode, GLint action, GLint mods) {
+    // Switch pause
     if (key == GLFW_KEY_P && action == GLFW_PRESS) {
         paused ^= true;
     }
+
+    // Increase speed
     if (key == GLFW_KEY_I && action == GLFW_PRESS) {
-        speedMul = 1.6;
+        speedMul = 1.6F;
         std::cout << "Rotation speed: " << speed * speedMul << std::endl;
     }
+
+    // Decrease speed
     if (key == GLFW_KEY_D && action == GLFW_PRESS) {
-        speedMul = 1.0f / 1.6f;
+        speedMul = 1.0F / 1.6F;
         std::cout << "Rotation speed: " << speed * speedMul << std::endl;
     }
 }

@@ -1,6 +1,6 @@
 CXX = g++
 
-CXXFLAGS = -Wall -std=c++17 -O2 -Iinclude -MMD -MP
+CXXFLAGS = -Wall -std=c++20 -O2 -Iinclude -MMD -MP
 LINKLIBS = -lglfw -lGLEW -lGLU -lGL
 
 SOURCES = src/main.cxx
@@ -9,7 +9,8 @@ OBJECTS = $(SOURCES:.cxx=.o)
 DEPENDS = $(OBJECTS:.o=.d)
 
 .PHONY: clean all
-	.DEFAULT_GOAL := all
+
+.DEFAULT_GOAL := all
 
 all: lol.out
 

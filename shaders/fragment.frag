@@ -6,6 +6,7 @@ in vec2 texCoord;
 out vec4 fragColor;
 
 uniform float redValue;
+
 uniform sampler2D ourTextureWall;
 uniform sampler2D ourTextureWood;
 
