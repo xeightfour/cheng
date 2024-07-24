@@ -2,10 +2,13 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
-#include <cmath>
 
-#include <shader/shader.hxx>
-#include <texture/texture.hxx>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <shader/shader.h>
+#include <texture/texture.h>
 
 void framebufferSizeCallback(GLFWwindow *window, GLint width, GLint height);
 
@@ -21,7 +24,7 @@ constexpr GLfloat ZERO = 0.0F;
 constexpr GLuint SCREEN_WIDTH = 800;
 constexpr GLuint SCREEN_HEIGHT = 800;
 
-constexpr GLfloat PI = acos(-1);
+constexpr GLfloat PI = std::acos(-1);
 
 // Duration of each frame (90 FPS)
 constexpr GLfloat frameTime = 1.0F / 90.0F;
@@ -38,8 +41,9 @@ GLfloat speedMul = ZERO;
 GLfloat angleExcess = ZERO;
 GLfloat angle = ZERO;
 
-// Rotation axis
-GLfloat rotationAxis[] = { 0.577F, 0.577F, 0.577F };
+// Rotation axis & matrix
+glm::vec4 R(1.0F, 1.0F, 1.0F, 1.0F);
+glm::mat4 trans;
 
 int main() {
     std::cout << "Hello shader!" << std::endl;
@@ -95,7 +99,7 @@ int main() {
         0, 1, 3,
         1, 2, 3,
         4, 5, 6,
-        // 4, 7, 8
+        4, 7, 8
     };
 
     GLfloat colors[] = {
@@ -174,6 +178,10 @@ int main() {
     // Observed time
     GLfloat phoneyTime = lastFrame;
 
+    // Normalize rotation axis
+    GLfloat Rlen = glm::length(glm::vec3(R.x, R.y, R.z));
+    R /= Rlen;
+
     while(!glfwWindowShouldClose(window)) {
         GLfloat timeValue = glfwGetTime();
 
@@ -196,11 +204,6 @@ int main() {
         glBindVertexArray(VAO);
 
         shader.activate();
-
-        // Set rotation axis for shader
-        shader.setFloat("Rx", rotationAxis[0]);
-        shader.setFloat("Ry", rotationAxis[1]);
-        shader.setFloat("Rz", rotationAxis[2]);
 
         // Add textures to shader
         shader.setInt("ourTextureWall", 0);
@@ -225,11 +228,21 @@ int main() {
 
         // Rotation angle
         angle = phoneyTime * 2.0F * PI * speed + angleExcess;
-        shader.setFloat("cos", cos(angle));
-        shader.setFloat("sin", sin(angle));
+        GLfloat cos = std::cos(angle);
+        GLfloat sin = std::sin(angle);
+        trans = glm::mat4(
+            cos + R.x * R.x * (1.0F - cos), R.x * R.y * (1.0F - cos) - R.z * sin, R.x * R.z * (1.0F - cos) + R.y * sin, 0.0F,
+            R.x * R.y * (1.0F - cos) + R.z * sin, cos + R.y * R.y * (1.0F - cos), R.y * R.z * (1.0F - cos) - R.x * sin, 0.0F,
+            R.x * R.z * (1.0F - cos) - R.y * sin, R.y * R.z * (1.0F - cos) + R.x * sin, cos + R.z * R.z * (1.0F - cos), 0.0F,
+            0.0F, 0.0F, 0.0F, 1.0F
+        );
+
+        // Load transformation to shader
+        GLuint transformLoc = glGetUniformLocation(shader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
         // Just draw everything to screen
-        glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
         glBindVertexArray(0);
 
