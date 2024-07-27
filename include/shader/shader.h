@@ -104,4 +104,8 @@ struct Shader {
     void setFloat(const std::string &name, GLfloat value) const {
         glUniform1f(glGetUniformLocation(ID, name.data()), value);
     }
+
+    GLuint getLoc(const std::string &name) const {
+        return glGetUniformLocation(ID, name.data());
+    }
 };

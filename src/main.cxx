@@ -238,8 +238,7 @@ int main() {
         );
 
         // Load transformation to shader
-        GLuint transformLoc = glGetUniformLocation(shader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+        glUniformMatrix4fv(shader.getLoc("transform"), 1, GL_FALSE, glm::value_ptr(trans));
 
         // Just draw everything to screen
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);

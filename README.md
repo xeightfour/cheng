@@ -15,7 +15,6 @@ TODO
 - [x] Better makefile
 - [x] Texture
 - [x] Better rotation
-- [ ] Shader support for settting multiple values
 
 Result
 ------
