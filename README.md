@@ -9,3 +9,8 @@ TODO
 ----
 
 - [ ] Refactor
+
+Result
+------
+
+![](https://raw.githubusercontent.com/xeightfour/cheng/main/assets/sample.gif)

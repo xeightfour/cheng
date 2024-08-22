@@ -2,10 +2,10 @@
 *.d
 
 # Compiled object files
+*.o
 *.lo
 *.slo
 *.obj
-*.o
 
 # Precompiled headers
 *.gch
@@ -13,16 +13,19 @@
 
 # Compiled dynamic libraries
 *.so
-*.dylib
 *.dll
+*.dylib
 
 # Compiled static libraries
 *.a
+*.la
 *.lai
 *.lib
-*.la
 
 # Executables
 *.exe
 *.out
 *.app
+
+# Videos
+*.mp4
