@@ -66,7 +66,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Anti Aliasing
-	glfwWindowHint(GLFW_SAMPLES, 8);
+	glfwWindowHint(GLFW_SAMPLES, 16);
 	glEnable(GL_MULTISAMPLE);
 
 	GLFWwindow *window = glfwCreateWindow(Width, Height, "BlahBlahBlah", nullptr, nullptr);
@@ -98,7 +98,7 @@ int main() {
 	Texture woodText("assets/wood.jpg");
 
 	// What the fuck seriously
-#include <data.dat>
+#include <data.h>
 
 	GLuint VAO;
 	glGenVertexArrays(1, &VAO);
