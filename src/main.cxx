@@ -270,7 +270,7 @@ void handleInput(GLFWwindow *window) {
 
 void keyCallback(GLFWwindow *window, GLint key, GLint scancode, GLint action, GLint mods) {
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
-		paused = ~paused;
+		paused = !paused;
 	}
 	if (key == GLFW_KEY_RIGHT_BRACKET && action == GLFW_PRESS) {
 		if (speed < 8.0F) {
