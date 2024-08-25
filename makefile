@@ -9,7 +9,7 @@ LIBDIR = lib
 SOURCES = $(shell find $(SRCDIR) -name '*.cxx')
 
 DEPFLAGS = -MMD -MP
-CXXFLAGS = -Wall -Wextra -std=c++20 -O2 -I$(INCDIR)
+CXXFLAGS = -Wall -Wextra -std=c++23 -O2 -I$(INCDIR)
 LINKLIBS = -lglfw -lGLEW -lGL -ljpeg
 
 OBJECTS = $(SOURCES:%=$(BLDDIR)/%.o)

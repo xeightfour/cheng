@@ -4,10 +4,7 @@
 
 #include <acs.h>
 
-#include <iostream>
-
-using std::endl;
-using std::cout;
+#include <print>
 
 struct Texture {
 	GLuint ID;
@@ -28,7 +25,7 @@ struct Texture {
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->width, image->height, 0, GL_RGB, GL_UNSIGNED_BYTE, image->data);
 			glGenerateMipmap(GL_TEXTURE_2D);
 		} else {
-			cout << "[ERROR] TEXTURE FAILED TO LOAD IMAGE" << endl;
+			std::print("[ERROR] TEXTURE FAILED TO LOAD IMAGE\n");
 		}
 
 		glBindTexture(GL_TEXTURE_2D, 0);

@@ -1,3 +1,5 @@
+#include <print>
+
 GLfloat vertices[] = {
 	-0.5F, -0.5F, -0.5F,
 	+0.5F, -0.5F, -0.5F,

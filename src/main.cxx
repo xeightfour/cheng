@@ -8,10 +8,7 @@
 #include <shader/shader.h>
 #include <texture/texture.h>
 
-#include <iostream>
-
-using std::endl;
-using std::cout;
+#include <print>
 
 void framebufferSizeCallback(GLFWwindow *window, GLint width, GLint height);
 
@@ -57,8 +54,8 @@ GLfloat lastX = 400.0F;
 GLfloat lastY = 400.0F;
 
 int main() {
-	cout << "Hello shader!" << endl;
-	cout << "Press <ESC> or Q to kill the program <:" << endl;
+	std::print("Hello Shader!\n");
+	std::print("Press <ESC> or Q to kill the program <:\n");
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -71,7 +68,7 @@ int main() {
 
 	GLFWwindow *window = glfwCreateWindow(Width, Height, "BlahBlahBlah", nullptr, nullptr);
 	if (window == nullptr) {
-		cout << "[ERROR] Failed to create GLFW window" << endl;
+		std::print("[ERROR] Failed to create GLFW window\n");
 		glfwTerminate();
 		return 1;
 	}
@@ -87,12 +84,12 @@ int main() {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (glewInit()) {
-		cout << "[ERROR] Failed to initialize GLEW" << endl;
+		std::print("[ERROR] Failed to initialize GLEW\n");
 		glfwTerminate();
 		return 1;
 	}
 
-	Shader shader("lib/shaders/vertex.vert", "lib/shaders/fragment.frag");
+	Shader shader("lib/shaders/main.vert", "lib/shaders/main.frag");
 
 	Texture wallText("assets/wall.jpg");
 	Texture woodText("assets/wood.jpg");
@@ -275,13 +272,13 @@ void keyCallback(GLFWwindow *window, GLint key, GLint scancode, GLint action, GL
 	if (key == GLFW_KEY_RIGHT_BRACKET && action == GLFW_PRESS) {
 		if (speed < 8.0F) {
 			speedMul = 2.0F;
-			cout << "Rotation speed: " << speed * speedMul << endl;
+			std::print("Rotation speed: {}\n", speed * speedMul);
 		}
 	}
 	if (key == GLFW_KEY_LEFT_BRACKET && action == GLFW_PRESS) {
 		if (speed > 0.05F) {
 			speedMul = 0.5F;
-			cout << "Rotation speed: " << speed * speedMul << endl;
+			std::print("Rotation speed: {}\n", speed * speedMul);
 		}
 	}
 }

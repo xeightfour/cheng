@@ -2,13 +2,10 @@
 
 #include <GL/glew.h>
 
-#include <iostream>
+#include <print>
 #include <string>
 #include <sstream>
 #include <fstream>
-
-using std::endl;
-using std::cout;
 
 struct Shader {
 	GLuint ID;
@@ -35,7 +32,7 @@ struct Shader {
 			vertexFile.close();
 			fragmentFile.close();
 		} catch (const std::ifstream::failure &ERR) {
-			cout << "[ERROR] SHADER FILE NOT SUCCESSFULLY LOAD" << endl;
+			std::print("[ERROR] SHADER FILE NOT SUCCESSFULLY LOAD\n");
 		}
 
 		const char *vertexShaderSource = vertexCode.data();
@@ -53,7 +50,7 @@ struct Shader {
 		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
 		if (!success) {
 			glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-			cout << "[ERROR] SHADER VERTEX COMPILATION FAILED\n" << infoLog << endl;
+			std::print("[ERROR] SHADER VERTEX COMPILATION FAILED\n{}\n", infoLog);
 		}
 
 		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -63,7 +60,7 @@ struct Shader {
 		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 		if (!success) {
 			glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-			cout << "[ERROR] SHADER FRAGMENT COMPILATION FAILED\n" << infoLog << endl;
+			std::print("[ERROR] SHADER FRAGMENT COMPILATION FAILED\n{}\n", infoLog);
 		}
 
 		// Link all to a program
@@ -75,7 +72,7 @@ struct Shader {
 		glGetProgramiv(ID, GL_LINK_STATUS, &success);
 		if (!success) {
 			glGetProgramInfoLog(ID, 512, nullptr, infoLog);
-			cout << "[ERROR] SHADER PROGRAM LINKING FAILED\n" << infoLog << endl;
+			std::print("[ERROR] SHADER PROGRAM LINKING FAILED\n{}\n", infoLog);
 		}
 
 		// Delete shaders <:

@@ -3,10 +3,7 @@
 #include <jpeglib.h>
 #include <jerror.h>
 
-#include <iostream>
-
-using std::endl;
-using std::cerr;
+#include <print>
 
 struct Image {
 	unsigned int numComponents;
@@ -29,7 +26,7 @@ Image *acsLoadImageFile(const char *fileName) {
 
 	FILE *file = fopen(fileName, "rb");
 	if (file == nullptr) {
-		cerr << "[ERROR] File " << __FILE__ << ", line" << __LINE__ << ",\nFailed to read file " << fileName << endl;
+		std::print("[ERROR] File {}, line {},\nFailed to read file {}\n", __FILE__, __LINE__, fileName);
 		return nullptr;
 	}
 
@@ -45,7 +42,7 @@ Image *acsLoadImageFile(const char *fileName) {
 	imgHeight = deck.output_height;
 	imgComponents = deck.num_components;
 
-	cerr << "Read JPEG with dimensions " << imgWidth << " x " << imgHeight << " and " << imgComponents << " components" << endl;
+	std::print("Read JPEG with dimensions {} x {} and {} components\n", imgWidth, imgHeight, imgComponents);
 
 	bufferBytes = imgWidth * imgHeight * 3;
 	imgData = (unsigned char*)malloc(sizeof(unsigned char) * bufferBytes);
@@ -77,7 +74,7 @@ int acsSaveImageFile(Image *image, const char *fileName, int quality = 90) {
 
 	FILE *file = fopen(fileName, "wb");
 	if(file == nullptr) {
-		cerr << "[ERROR] File " << __FILE__ << ", line " << __LINE__ << ",\nFailed to open output file " << fileName << endl;
+		std::print("[ERROR] File {}, line {},\nFailed to open output file {}\n", __FILE__, __LINE__, fileName);
 		return 1;
 	}
 
