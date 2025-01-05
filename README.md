@@ -8,8 +8,6 @@ Dependencies
 TODO
 ----
 
-- [ ] Refactor
-
 Result
 ------
 

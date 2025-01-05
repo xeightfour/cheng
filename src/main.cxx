@@ -7,6 +7,7 @@
 
 #include <shader/shader.h>
 #include <texture/texture.h>
+#include <vertices.h>
 
 #include <print>
 
@@ -94,8 +95,7 @@ int main() {
 	Texture wallText("assets/wall.jpg");
 	Texture woodText("assets/wood.jpg");
 
-	// What the fuck seriously
-#include <data.h>
+	updateVertData();
 
 	GLuint VAO;
 	glGenVertexArrays(1, &VAO);

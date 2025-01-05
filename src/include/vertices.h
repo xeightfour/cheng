@@ -1,5 +1,3 @@
-#include <print>
-
 GLfloat vertices[] = {
 	-0.5F, -0.5F, -0.5F,
 	+0.5F, -0.5F, -0.5F,
@@ -53,9 +51,11 @@ GLfloat vertices[] = {
 };
 
 // Move the cube upwards
-for (int i = 0; i < 3 * 36; i += 3) {
-	vertices[i] += 3.0F;
-	vertices[i + 1] += 6.0F;
+void updateVertData() {
+	for (int i = 0; i < 3 * 36; i += 3) {
+		vertices[i] += 3.0F;
+		vertices[i + 1] += 6.0F;
+	}
 }
 
 // Fuck EBO for now <;
