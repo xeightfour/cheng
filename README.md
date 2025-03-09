@@ -8,7 +8,7 @@ Dependencies
 TODO
 ----
 
-Add rays to show the horizon!
+- [ ] Add rays to show the horizon!
 
 Result
 ------
